@@ -2,6 +2,7 @@ from pathlib import Path
 import os
 import environ
 
+from datetime import timedelta
 from django.utils.translation import ugettext_lazy as _
 
 
@@ -35,12 +36,18 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'rest_framework',
+    # 'rest_framework.authtoken',
+    'djoser',
+    'corsheaders',
+    'accounts',
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.locale.LocaleMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -68,13 +75,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'app.wsgi.application'
 
-
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': BASE_DIR / 'db.sqlite3',
-#     }
-# }
 
 # Data base接続
 SQLITE = env.get_value('SQLITE', cast = bool, default = True)
@@ -123,6 +123,30 @@ AUTH_PASSWORD_VALIDATORS = [
 # LOGIN_URL = 'account:login'
 # LOGOUT_REDIRECT_URL = 'account:login'
 
+# JWT認証setting
+SIMPLE_JWT = {
+    #トークンをJWTに設定
+    'AUTH_HEADER_TYPES':('JWT'),
+    #トークンの持続時間の設定
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=60)
+}
+
+# Rest framework setting
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        # 'rest_framework.authentication.TokenAuthentication',
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ],
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'PAGE_SIZE': 100,
+}
+
+# CORS
+CORS_ALLOW_ALL_ORIGINS = True
+#CORS_ALLOWED_ORIGINS = [
+#    'http://localhost:3000',
+#]
+
 
 # Internationalization
 # https://docs.djangoproject.com/en/3.1/topics/i18n/
@@ -155,3 +179,6 @@ STATICFILES_DIRS = [
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = 'media/'
+
+# Custom User model
+AUTH_USER_MODEL = 'accounts.User'
