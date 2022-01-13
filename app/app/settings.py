@@ -2,6 +2,7 @@ from pathlib import Path
 import os
 import environ
 
+
 from datetime import timedelta
 from django.utils.translation import ugettext_lazy as _
 
@@ -37,10 +38,10 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
-    # 'rest_framework.authtoken',
     'djoser',
     'corsheaders',
     'accounts',
+
 ]
 
 MIDDLEWARE = [
@@ -123,6 +124,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # LOGIN_URL = 'account:login'
 # LOGOUT_REDIRECT_URL = 'account:login'
 
+
 # JWT認証setting
 SIMPLE_JWT = {
     #トークンをJWTに設定
@@ -134,7 +136,6 @@ SIMPLE_JWT = {
 # Rest framework setting
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
-        # 'rest_framework.authentication.TokenAuthentication',
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ],
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
@@ -146,6 +147,7 @@ CORS_ALLOW_ALL_ORIGINS = True
 #CORS_ALLOWED_ORIGINS = [
 #    'http://localhost:3000',
 #]
+
 
 
 # Internationalization
@@ -178,6 +180,7 @@ STATICFILES_DIRS = [
 ]
 
 MEDIA_URL = '/media/'
+
 MEDIA_ROOT = 'media/'
 
 # Custom User model
