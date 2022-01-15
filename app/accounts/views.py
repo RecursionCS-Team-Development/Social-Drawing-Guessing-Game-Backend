@@ -6,5 +6,5 @@ from accounts.serializers import UserSerializer
 
 
 class UserViewSet(viewsets.ModelViewSet):
-    queryset = get_user_model().objects.all()
+    queryset = get_user_model().filter(is_active=True)
     serializer_class = UserSerializer

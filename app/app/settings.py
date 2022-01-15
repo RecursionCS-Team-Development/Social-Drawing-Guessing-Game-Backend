@@ -125,12 +125,52 @@ AUTH_PASSWORD_VALIDATORS = [
 # LOGOUT_REDIRECT_URL = 'account:login'
 
 
+# EMAIL
+# ローカル確認用
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+# 本番環境用
+# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'hicos69899@reamtv.com'
+# EMAIL_HOST_PASSWORD = ''
+EMAIL_USE_TLS = True
+
+
+# Djoser
+DJOSER = {
+    'LOGIN_FIELD': 'email', # メールアドレスでログイン
+    'SEND_ACTIVATION_EMAIL': True, # アカウント本登録メール
+    'SEND_CONFIRMATION_EMAIL': True, # アカウント本登録完了メール
+    'USERNAME_CHANGED_EMAIL_CONFIRMATION': True, # メールアドレス変更完了メール
+    'PASSWORD_CHANGED_EMAIL_CONFIRMATION': True, # パスワード変更完了メール
+    'USER_CREATE_PASSWORD_RETYPE': True, # 新規登録時に確認用パスワード必須
+    'SET_USERNAME_RETYPE': True, # メールアドレス変更時に確認用メールアドレス必須
+    'SET_PASSWORD_RETYPE': True, # パスワード変更時に確認用パスワード必須
+    'ACTIVATION_URL': 'activate/{uid}/{token}', # アカウント本登録用URL
+    'USERNAME_RESET_CONFIRM_URL': 'email/reset/confirm/{uid}/{token}', # メールアドレスリセット完了用URL
+    'PASSWORD_RESET_CONFIRM_URL': 'password/reset/confirm/{uid}/{token}', # パスワードリセット完了用URL
+    'SERIALIZER': {
+        # カスタムユーザー用のserializer
+        'user_create': 'accounts.serializers.UserSerializer',
+        'user': 'accounts.serializers.UserSerializer',
+        'current_user': 'accounts.serializers.UserSerializer',
+    },
+    # 'EMAIL': {},
+}
+
+
 # JWT認証setting
 SIMPLE_JWT = {
-    #トークンをJWTに設定
-    'AUTH_HEADER_TYPES':('JWT'),
-    #トークンの持続時間の設定
-    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=60)
+    # トークンタイプをJWTに設定
+    'AUTH_HEADER_TYPES':('JWT', ),
+    # 認証トークン
+    'AUTH_TOKEN_CLASSES': ('rest_framework_simplejwt.tokens.AccessToken', ),
+    # アクセストークンの持続時間の設定
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=60),
+    # リフレッシュトークンの持続時間
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=3),
 }
 
 # Rest framework setting
