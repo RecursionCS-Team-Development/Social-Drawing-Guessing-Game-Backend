@@ -2,6 +2,8 @@ from pathlib import Path
 import os
 import environ
 
+
+from datetime import timedelta
 from django.utils.translation import ugettext_lazy as _
 
 
@@ -35,12 +37,18 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'rest_framework',
+    'djoser',
+    'corsheaders',
+    'accounts',
+
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.locale.LocaleMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -68,13 +76,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'app.wsgi.application'
 
-
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': BASE_DIR / 'db.sqlite3',
-#     }
-# }
 
 # Data base接続
 SQLITE = env.get_value('SQLITE', cast = bool, default = True)
@@ -124,6 +125,71 @@ AUTH_PASSWORD_VALIDATORS = [
 # LOGOUT_REDIRECT_URL = 'account:login'
 
 
+# EMAIL
+# ローカル確認用
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+# 本番環境用
+# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'hicos69899@reamtv.com'
+# EMAIL_HOST_PASSWORD = ''
+EMAIL_USE_TLS = True
+
+
+# Djoser
+DJOSER = {
+    'LOGIN_FIELD': 'email', # メールアドレスでログイン
+    'SEND_ACTIVATION_EMAIL': True, # アカウント本登録メール
+    'SEND_CONFIRMATION_EMAIL': True, # アカウント本登録完了メール
+    'USERNAME_CHANGED_EMAIL_CONFIRMATION': True, # メールアドレス変更完了メール
+    'PASSWORD_CHANGED_EMAIL_CONFIRMATION': True, # パスワード変更完了メール
+    'USER_CREATE_PASSWORD_RETYPE': True, # 新規登録時に確認用パスワード必須
+    'SET_USERNAME_RETYPE': True, # メールアドレス変更時に確認用メールアドレス必須
+    'SET_PASSWORD_RETYPE': True, # パスワード変更時に確認用パスワード必須
+    'ACTIVATION_URL': 'activate/{uid}/{token}', # アカウント本登録用URL
+    'USERNAME_RESET_CONFIRM_URL': 'email/reset/confirm/{uid}/{token}', # メールアドレスリセット完了用URL
+    'PASSWORD_RESET_CONFIRM_URL': 'password/reset/confirm/{uid}/{token}', # パスワードリセット完了用URL
+    'SERIALIZER': {
+        # カスタムユーザー用のserializer
+        'user_create': 'accounts.serializers.UserSerializer',
+        'user': 'accounts.serializers.UserSerializer',
+        'current_user': 'accounts.serializers.UserSerializer',
+    },
+    # 'EMAIL': {},
+}
+
+
+# JWT認証setting
+SIMPLE_JWT = {
+    # トークンタイプをJWTに設定
+    'AUTH_HEADER_TYPES':('JWT', ),
+    # 認証トークン
+    'AUTH_TOKEN_CLASSES': ('rest_framework_simplejwt.tokens.AccessToken', ),
+    # アクセストークンの持続時間の設定
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=60),
+    # リフレッシュトークンの持続時間
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=3),
+}
+
+# Rest framework setting
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ],
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'PAGE_SIZE': 100,
+}
+
+# CORS
+CORS_ALLOW_ALL_ORIGINS = True
+#CORS_ALLOWED_ORIGINS = [
+#    'http://localhost:3000',
+#]
+
+
+
 # Internationalization
 # https://docs.djangoproject.com/en/3.1/topics/i18n/
 
@@ -154,4 +220,8 @@ STATICFILES_DIRS = [
 ]
 
 MEDIA_URL = '/media/'
+
 MEDIA_ROOT = 'media/'
+
+# Custom User model
+AUTH_USER_MODEL = 'accounts.User'
