@@ -6,4 +6,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/auth/',include('djoser.urls'), name="auth"),
     path('api/auth/',include('djoser.urls.jwt')),
+    # path('api/', include('drawing.urls')),
 ]
