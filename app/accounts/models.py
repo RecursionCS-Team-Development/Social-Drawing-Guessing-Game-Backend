@@ -1,6 +1,7 @@
 from django.db import models
-from django.contrib.auth.models import AbstractUser
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, BaseUserManager
+
+from drawing.models import Member
 
 # Create your models here.
 class UserManager(BaseUserManager):
@@ -27,6 +28,9 @@ class UserManager(BaseUserManager):
 class User(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField('メールアドレス', max_length=255, unique=True)
     username = models.CharField('名前', max_length=255)
+    profile = models.TextField("自己紹介")
+    icon = models.ImageField("アイコン", upload_to="users/icon", null=True)
+    member = models.ForeignKey(Member, verbose_name="メンバー", on_delete=models.SET_NULL, null=True)
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
 
