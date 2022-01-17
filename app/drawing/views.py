@@ -2,6 +2,7 @@ from django.shortcuts import render
 import json
 from django.http import JsonResponse
 
+# test
 def IndexView(request):
   template = "vue_index.html"
 
