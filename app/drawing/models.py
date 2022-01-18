@@ -2,11 +2,12 @@ from django.db import models
 from django.conf import settings
 from django.core.validators import MinValueValidator, MaxValueValidator
 
+
 # Create your models here.
 
 class Room(models.Model):
     name = models.CharField("ルーム名", max_length=50)
-    status = models.PositiveSmallIntegerField("状態", choices=[
+    status = models.PositiveSmallIntegerField("状態", default=1, choices=[
         (1, "作成"),
         (2, "参加"),
         (3, "満室"),
@@ -20,15 +21,28 @@ class Room(models.Model):
         return self.name
 
 class Member(models.Model):
-    room = models.OneToOneField(Room, verbose_name="ルーム", on_delete=models.CASCADE)
+    room = models.ForeignKey(Room, verbose_name="ルーム", on_delete=models.CASCADE)
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, verbose_name="メンバー", null=True, unique=True, on_delete=models.CASCADE)
+    score = models.PositiveIntegerField("スコア", default=0, validators=[MinValueValidator(0)])
 
     class Meta:
         verbose_name = "Member"
         verbose_name_plural = "Members"
 
     def __str__(self):
+        return f'{self.room.name}: {self.user}'
 
-        return self.room
+
+class ChatLog(models.Model):
+    member = models.ForeignKey(Member, verbose_name="メンバー", on_delete=models.CASCADE)
+    message = models.CharField("message", max_length=255)
+
+    class Meta:
+        verbose_name = "ChatLog"
+        verbose_name_plural = "ChatLogs"
+
+    def __str__(self):
+        return f'{self.member}: {self.message}'
 
 
 class Picture(models.Model):

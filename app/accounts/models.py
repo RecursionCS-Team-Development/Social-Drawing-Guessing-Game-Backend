@@ -28,9 +28,8 @@ class UserManager(BaseUserManager):
 class User(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField('メールアドレス', max_length=255, unique=True)
     username = models.CharField('名前', max_length=255)
-    profile = models.TextField("自己紹介")
+    profile = models.TextField("自己紹介", null=True)
     icon = models.ImageField("アイコン", upload_to="users/icon", null=True)
-    member = models.ForeignKey(Member, verbose_name="メンバー", on_delete=models.SET_NULL, null=True)
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
 
@@ -41,4 +40,4 @@ class User(AbstractBaseUser, PermissionsMixin):
     REQUIRED_FIELDS = ['username']
 
     def __str__(self):
-        return self.email
+        return self.username
