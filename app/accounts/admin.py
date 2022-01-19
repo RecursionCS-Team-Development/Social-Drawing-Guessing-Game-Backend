@@ -16,6 +16,8 @@ class UserAdminCustom(UserAdmin):
                 'username',
                 'email',
                 'password',
+                'icon',
+                'profile',
                 'is_active',
                 'is_staff',
                 'is_superuser',
