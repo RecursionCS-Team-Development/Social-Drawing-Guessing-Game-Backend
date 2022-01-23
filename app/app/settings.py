@@ -41,7 +41,9 @@ INSTALLED_APPS = [
     'djoser',
     'corsheaders',
     'accounts',
-    'drawing'
+    'drawing',
+    'chat',
+    'channels'
 ]
 
 MIDDLEWARE = [
@@ -93,7 +95,16 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'app.wsgi.application'
+ASGI_APPLICATION = 'app.asgi.application'
 
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels_redis.core.RedisChannelLayer',
+        'CONFIG': {
+            'hosts': [('127.0.0.1', 6379)],
+        },
+    },
+}
 
 # Data base接続
 SQLITE = env.get_value('SQLITE', cast = bool, default = True)
