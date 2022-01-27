@@ -29,7 +29,7 @@ SECRET_KEY = env('SECRET_KEY')
 DEBUG = env.get_value('DEBUG', cast = bool, default = True)
 
 if DEBUG:
-    ALLOWED_HOSTS = ['*']
+    ALLOWED_HOSTS = ['http://localhost:8080/']
 else:
     ALLOWED_HOSTS = ['social-drawing-guessing-game.herokuapp.com', 'yourdomain.com']
 
@@ -60,6 +60,10 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
+
+# CORS
+# CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOW_CREDENTIALS = True
 
 CORS_ORIGIN_WHITELIST = (
     'http://localhost:8080',
@@ -204,12 +208,6 @@ REST_FRAMEWORK = {
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
     'PAGE_SIZE': 100,
 }
-
-# CORS
-CORS_ALLOW_ALL_ORIGINS = True
-#CORS_ALLOWED_ORIGINS = [
-#    'http://localhost:3000',
-#]
 
 
 
