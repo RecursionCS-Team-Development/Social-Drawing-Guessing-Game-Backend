@@ -17,7 +17,7 @@ class MemberSerializer(serializers.ModelSerializer):
 class ChatLogSerializer(serializers.ModelSerializer):
     class Meta:
         model = ChatLog
-        fields = ('member', 'message')
+        fields = ('id', 'member', 'message')
 
 
 
