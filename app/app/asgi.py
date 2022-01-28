@@ -16,6 +16,7 @@ import chat.routing
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'app.settings')
 
+# ProtocolTypeRouterを使用してアクセスしてきたスキーマをcheckしてhttp, websocket(ws, wss)を分ける
 application = ProtocolTypeRouter({
   'http': get_asgi_application(),
   'websocket': AuthMiddlewareStack(

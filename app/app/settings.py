@@ -59,6 +59,7 @@ MIDDLEWARE = [
 ]
 
 CORS_ORIGIN_WHITELIST = (
+    # おそらくdeployで変更必要
     'http://localhost:8080',
     'http://127.0.0.1:8080'
 )
@@ -99,10 +100,12 @@ ASGI_APPLICATION = 'app.asgi.application'
 
 CHANNEL_LAYERS = {
     'default': {
-        'BACKEND': 'channels_redis.core.RedisChannelLayer',
-        'CONFIG': {
-            'hosts': [('127.0.0.1', 6379)],
-        },
+        'BACKEND': 'channels.layers.InMemoryChannelLayer',
+        # 本番は下記のものを使用する（configもいじる）
+        # 'BACKEND': 'channels_redis.core.RedisChannelLayer',
+        # 'CONFIG': {
+        #     'hosts': [('127.0.0.1', 6379)],
+        # },
     },
 }
 
