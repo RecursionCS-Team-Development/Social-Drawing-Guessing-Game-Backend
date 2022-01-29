@@ -1,15 +1,15 @@
 from django.contrib.auth import get_user_model
 from rest_framework import viewsets
-from rest_framework.decorators import permission_classes
+# from rest_framework.decorators import permission_classes
 from rest_framework.generics import ListCreateAPIView
 from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated
-from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView, TokenError, InvalidToken
+from rest_framework_simplejwt.views import TokenObtainPairView, TokenError, InvalidToken
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework.response import Response
 from rest_framework import status
-from rest_framework.settings import api_settings
-from accounts.serializers import UserSerializer, LoginSerializer, LogoutSerializer
+from rest_framework_simplejwt.settings import api_settings
+from accounts.serializers import UserSerializer, LoginSerializer
 # Create your views here.
 
 
@@ -46,9 +46,7 @@ class LoginAPIView(TokenObtainPairView):
         return response
 
 
-class LogoutAPIView(TokenRefreshView):
-
-    serializer_class = LogoutSerializer
+class LogoutAPIView(APIView):
 
     def post(self, request, *args, **kwargs):
         response = Response(status=status.HTTP_204_NO_CONTENT)
@@ -60,12 +58,10 @@ class RefreshAPIView(APIView):
 
     def post(self, request, format=None):
         refresh = self.request.COOKIES.get('refresh')
-
         if refresh is not None:
             refresh = RefreshToken(refresh)
-            data = {'access': str(refresh.access_token)}
-            print(data['access']) #TEST
 
+            data = {'access': str(refresh.access_token)}
             if api_settings.ROTATE_REFRESH_TOKENS:
                 if api_settings.BLACKLIST_AFTER_ROTATION:
                     try:
@@ -78,6 +74,7 @@ class RefreshAPIView(APIView):
 
             refresh.set_jti()
             refresh.set_exp()
+            # refresh.set_iat()
 
             data['refresh'] = str(refresh)
 

@@ -1,6 +1,6 @@
 from django.contrib.auth import get_user_model, authenticate
 from rest_framework import serializers
-from rest_framework_simplejwt.serializers import TokenObtainPairSerializer, TokenRefreshSerializer
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework_simplejwt.settings import api_settings
 from django.contrib.auth.models import update_last_login
@@ -46,7 +46,7 @@ class LoginSerializer(TokenObtainPairSerializer):
         return data
 
 
-class LogoutSerializer(serializers.Serializer):
+class TokenRefreshSerializer(serializers.Serializer):
 
     def validate(self, attrs):
         refresh = self.request.COOKIES.get('refresh')
