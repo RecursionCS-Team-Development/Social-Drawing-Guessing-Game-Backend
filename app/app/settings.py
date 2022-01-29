@@ -45,7 +45,9 @@ INSTALLED_APPS = [
     'djoser',
     'corsheaders',
     'accounts',
-    'drawing'
+    'drawing',
+    'chat',
+    'channels'
 ]
 
 MIDDLEWARE = [
@@ -66,6 +68,7 @@ MIDDLEWARE = [
 CORS_ALLOW_CREDENTIALS = True
 
 CORS_ORIGIN_WHITELIST = (
+    # おそらくdeployで変更必要
     'http://localhost:8080',
     'http://127.0.0.1:8080'
 )
@@ -102,7 +105,18 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'app.wsgi.application'
+ASGI_APPLICATION = 'app.asgi.application'
 
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels.layers.InMemoryChannelLayer',
+        # 本番は下記のものを使用する（configもいじる）
+        # 'BACKEND': 'channels_redis.core.RedisChannelLayer',
+        # 'CONFIG': {
+        #     'hosts': [('127.0.0.1', 6379)],
+        # },
+    },
+}
 
 # Data base接続
 SQLITE = env.get_value('SQLITE', cast = bool, default = True)
