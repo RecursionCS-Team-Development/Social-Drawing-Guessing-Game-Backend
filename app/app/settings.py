@@ -2,6 +2,7 @@ from pathlib import Path
 import os
 import environ
 
+import django_heroku
 
 from datetime import timedelta
 from django.utils.translation import ugettext_lazy as _
@@ -15,8 +16,11 @@ LOCALE_PATHS = (os.path.join(BASE_DIR, 'locale'),)
 env = environ.Env(DEBUG=(bool,False))
 
 # 開発環境と本番環境での設定ファイルの分岐
-# 一旦開発環境のみ
-env.read_env(os.path.join(BASE_DIR,'.env'))
+IS_ON_HEROKU = env.bool('ON_HEROKU', default=False)
+
+if not IS_ON_HEROKU:
+    env.read_env(os.path.join(BASE_DIR,'.env'))
+
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = env('SECRET_KEY')
@@ -25,9 +29,9 @@ SECRET_KEY = env('SECRET_KEY')
 DEBUG = env.get_value('DEBUG', cast = bool, default = True)
 
 if DEBUG:
-    ALLOWED_HOSTS = ['*']
+    ALLOWED_HOSTS = ['http://localhost:8080/']
 else:
-    ALLOWED_HOSTS = ['social-drawing-guessing-game.com', 'yourdomain.com']
+    ALLOWED_HOSTS = ['social-drawing-guessing-game.herokuapp.com', 'yourdomain.com']
 
 
 INSTALLED_APPS = [
@@ -56,7 +60,12 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
+
+# CORS
+# CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOW_CREDENTIALS = True
 
 CORS_ORIGIN_WHITELIST = (
     # おそらくdeployで変更必要
@@ -214,12 +223,6 @@ REST_FRAMEWORK = {
     'PAGE_SIZE': 100,
 }
 
-# CORS
-CORS_ALLOW_ALL_ORIGINS = True
-#CORS_ALLOWED_ORIGINS = [
-#    'http://localhost:3000',
-#]
-
 
 
 # Internationalization
@@ -246,10 +249,11 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
 STATIC_URL = '/static/'
-# STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
+STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static/')
 ]
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 MEDIA_URL = '/media/'
 
@@ -257,3 +261,6 @@ MEDIA_ROOT = 'media/'
 
 # Custom User model
 AUTH_USER_MODEL = 'accounts.User'
+
+# heroku
+django_heroku.settings(locals())
