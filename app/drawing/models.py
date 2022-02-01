@@ -7,12 +7,24 @@ from django.core.validators import MinValueValidator, MaxValueValidator
 
 class Room(models.Model):
     name = models.CharField("ルーム名", max_length=50)
-    status = models.PositiveSmallIntegerField("状態", default=1, choices=[
-        (1, "作成"),
-        (2, "参加"),
-        (3, "満室"),
+    password = models.CharField("パスワード", max_length=50, null=True, blank=True)
+    entryNum = models.PositiveSmallIntegerField("参加人数", default=2, validators=[MinValueValidator(2), MaxValueValidator(6)])
+    mode = models.CharField("ゲームモード", max_length=50, default="絵当てゲーム", choices=[
+        ("絵当てゲーム", "絵当てゲーム"),
+        ("伝言ゲーム", "伝言ゲーム"),
     ])
-    is_play = models.BooleanField("プレイ中", default=False)
+    level = models.CharField("レベル", max_length=50, default="medium", choices=[
+        ("easy", "easy"),
+        ("medium", "medium"),
+        ("hard", "hard"),
+    ])
+    round = models.PositiveSmallIntegerField("ラウンド数", default=5, validators=[MinValueValidator(3), MaxValueValidator(7)])
+    # status = models.PositiveSmallIntegerField("状態", default=1, choices=[
+    #     (1, "作成"),
+    #     (2, "参加"),
+    #     (3, "満室"),
+    # ])
+    # is_play = models.BooleanField("プレイ中", default=False)
     class Meta:
         verbose_name = "Room"
         verbose_name_plural = "Rooms"
