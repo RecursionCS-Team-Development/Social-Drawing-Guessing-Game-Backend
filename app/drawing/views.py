@@ -12,7 +12,7 @@ class RoomViewSet(viewsets.ModelViewSet):
   queryset = Room.objects.all()
   serializer_class = RoomSerializer
   filter_backends = (filters.OrderingFilter,)
-  ordering_fields = ('id', 'status', 'is_play',)
+  ordering_fields = ('id', 'mode', 'level',)
   ordering = ('id')
 
 
