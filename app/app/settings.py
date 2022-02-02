@@ -68,9 +68,9 @@ MIDDLEWARE = [
 CORS_ALLOW_CREDENTIALS = True
 
 CORS_ORIGIN_WHITELIST = (
-    # おそらくdeployで変更必要
     'http://localhost:8080',
-    'http://127.0.0.1:8080'
+    'http://127.0.0.1:8080',
+    'https://social-drawing-guessing.netlify.app'
 )
 
 CORS_ALLOW_HEADERS = (
@@ -107,16 +107,19 @@ TEMPLATES = [
 WSGI_APPLICATION = 'app.wsgi.application'
 ASGI_APPLICATION = 'app.asgi.application'
 
-CHANNEL_LAYERS = {
-    'default': {
-        'BACKEND': 'channels.layers.InMemoryChannelLayer',
-        # 本番は下記のものを使用する（configもいじる）
-        # 'BACKEND': 'channels_redis.core.RedisChannelLayer',
-        # 'CONFIG': {
-        #     'hosts': [('127.0.0.1', 6379)],
-        # },
-    },
-}
+if DEBUG==False:
+    CHANNEL_LAYERS = {
+        'default': {
+            'BACKEND': 'channels.layers.InMemoryChannelLayer',
+        },
+    }
+else:
+    CHANNEL_LAYERS = {
+        'BACKEND': 'channels_redis.core.RedisChannelLayer',
+        'CONFIG': {
+            'hosts': [('127.0.0.1', 6379)],
+        },
+    }
 
 # Data base接続
 SQLITE = env.get_value('SQLITE', cast = bool, default = True)
@@ -182,8 +185,8 @@ EMAIL_USE_TLS = True
 # Djoser
 DJOSER = {
     'LOGIN_FIELD': 'email', # メールアドレスでログイン
-    'SEND_ACTIVATION_EMAIL': True, # アカウント本登録メール
-    'SEND_CONFIRMATION_EMAIL': True, # アカウント本登録完了メール
+    # 'SEND_ACTIVATION_EMAIL': True, # アカウント本登録メール
+    # 'SEND_CONFIRMATION_EMAIL': True, # アカウント本登録完了メール
     'USERNAME_CHANGED_EMAIL_CONFIRMATION': True, # メールアドレス変更完了メール
     'PASSWORD_CHANGED_EMAIL_CONFIRMATION': True, # パスワード変更完了メール
     'USER_CREATE_PASSWORD_RETYPE': True, # 新規登録時に確認用パスワード必須

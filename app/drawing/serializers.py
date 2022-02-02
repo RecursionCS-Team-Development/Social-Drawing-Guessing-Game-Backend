@@ -5,7 +5,7 @@ from .models import Room, Member, ChatLog, Picture
 class RoomSerializer(serializers.ModelSerializer):
     class Meta:
         model = Room
-        fields = ('id', 'name', 'status', 'is_play')
+        fields = ('id', 'name', 'password', 'entryNum', 'mode', 'level', 'round')
 
 
 class MemberSerializer(serializers.ModelSerializer):
