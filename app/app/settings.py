@@ -185,8 +185,8 @@ EMAIL_USE_TLS = True
 # Djoser
 DJOSER = {
     'LOGIN_FIELD': 'email', # メールアドレスでログイン
-    'SEND_ACTIVATION_EMAIL': True, # アカウント本登録メール
-    'SEND_CONFIRMATION_EMAIL': True, # アカウント本登録完了メール
+    # 'SEND_ACTIVATION_EMAIL': True, # アカウント本登録メール
+    # 'SEND_CONFIRMATION_EMAIL': True, # アカウント本登録完了メール
     'USERNAME_CHANGED_EMAIL_CONFIRMATION': True, # メールアドレス変更完了メール
     'PASSWORD_CHANGED_EMAIL_CONFIRMATION': True, # パスワード変更完了メール
     'USER_CREATE_PASSWORD_RETYPE': True, # 新規登録時に確認用パスワード必須
