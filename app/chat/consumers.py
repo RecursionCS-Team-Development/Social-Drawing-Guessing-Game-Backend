@@ -31,15 +31,28 @@ class ChatConsumer(AsyncWebsocketConsumer):
     # type をフロントに返すように明記（わかりやすくするためだけ）
     # json.dumps でstringにして送る
     message = json_text['message']
+    playerName = json_text['playerName']
+    playerImg = json_text['playerImg']
+    playerId = json_text['playerId']
 
     await self.channel_layer.group_send(self.room_group_name, {
       'type': 'chat_message',
-      'message': message
+      'message': message,
+      'playerName': playerName,
+      'playerImg': playerImg,
+      'playerId': playerId
     })
 
   async def chat_message(self, event):
+    print(event)
     message = event['message']
+    playerName = event['playerName']
+    playerImg = event['playerImg']
+    playerId = event['playerId']
 
     await self.send(text_data=json.dumps({
-      'message': message
+      'message': message,
+      'playerName': playerName,
+      'playerImg': playerImg,
+      'playerId': playerId
     }))
