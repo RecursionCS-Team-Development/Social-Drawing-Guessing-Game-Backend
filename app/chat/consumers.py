@@ -41,6 +41,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
       'playerName': playerName,
       'playerImg': playerImg,
       'playerId': playerId
+      'message': message
     })
 
   async def chat_message(self, event):
