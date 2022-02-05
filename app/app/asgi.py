@@ -14,7 +14,10 @@ from channels.routing import ProtocolTypeRouter, URLRouter
 from django.core.asgi import get_asgi_application
 import chat.routing
 
+import django
+
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'app.settings')
+django.setup()
 
 # ProtocolTypeRouterを使用してアクセスしてきたスキーマをcheckしてhttp, websocket(ws, wss)を分ける
 application = ProtocolTypeRouter({
