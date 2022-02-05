@@ -54,7 +54,7 @@ class LoginAPIView(TokenObtainPairView):
             serializer.validated_data["refresh"],
             max_age=60 * 60 * 24 * 30,
             httponly=True,
-            samesite='None',
+            samesite=None,
         )
         return response
 
