@@ -1,2 +1,1 @@
-web: gunicorn --pythonpath ./app app:app
-web: gunicorn --pythonpath ./app app.wsgi --log-file -
+web: daphne ./app app.asgi:application --port=$PORT --bind 0.0.0.0 -v2
