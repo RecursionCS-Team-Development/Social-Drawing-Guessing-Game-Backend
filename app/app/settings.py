@@ -107,24 +107,19 @@ TEMPLATES = [
 WSGI_APPLICATION = 'app.wsgi.application'
 ASGI_APPLICATION = 'app.asgi.application'
 
-CHANNEL_LAYERS = {
-    'default': {
-        'BACKEND': 'channels.layers.InMemoryChannelLayer',
-    },
-}
-# if DEBUG:
-#     CHANNEL_LAYERS = {
-#         'default': {
-#             'BACKEND': 'channels.layers.InMemoryChannelLayer',
-#         },
-#     }
-# else:
-#     CHANNEL_LAYERS = {
-#         'BACKEND': 'channels_redis.core.RedisChannelLayer',
-#         'CONFIG': {
-#             'hosts': [(env('DB_REDIS_HOST'), env('DB_REDIS_PORT'))],
-#         },
-#     }
+if DEBUG:
+    CHANNEL_LAYERS = {
+        'default': {
+            'BACKEND': 'channels.layers.InMemoryChannelLayer',
+        },
+    }
+else:
+    CHANNEL_LAYERS = {
+        'BACKEND': 'channels_redis.core.RedisChannelLayer',
+        'CONFIG': {
+            'hosts': [(env('DB_REDIS_HOST'), env('DB_REDIS_PORT'))],
+        },
+    }
 
 # Data base接続
 SQLITE = env.get_value('SQLITE', cast = bool, default = True)
