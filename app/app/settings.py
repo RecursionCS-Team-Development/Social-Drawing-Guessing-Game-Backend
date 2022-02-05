@@ -31,7 +31,7 @@ DEBUG = env.get_value('DEBUG', cast = bool, default = True)
 if DEBUG:
     ALLOWED_HOSTS = ['http://localhost:8080/']
 else:
-    ALLOWED_HOSTS = ['social-drawing-guessing-game.herokuapp.com', 'yourdomain.com']
+    ALLOWED_HOSTS = ['social-drawing-guessing-game.herokuapp.com', 'social-drawing-guessing.netlify.app']
 
 
 INSTALLED_APPS = [
