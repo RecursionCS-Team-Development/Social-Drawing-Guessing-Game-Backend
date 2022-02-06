@@ -123,6 +123,8 @@ else:
         },
     }
 
+print(CHANNEL_LAYERS)
+
 
 # Data base接続
 SQLITE = env.get_value('SQLITE', cast = bool, default = True)
