@@ -109,20 +109,26 @@ ASGI_APPLICATION = 'app.asgi.application'
 
 
 
-if DEBUG:
-    CHANNEL_LAYERS = {
-        'default': {
-            'BACKEND': 'channels.layers.InMemoryChannelLayer',
-        },
-    }
-else:
-    CHANNEL_LAYERS = {
-        'BACKEND': 'channels_redis.core.RedisChannelLayer',
-        'CONFIG': {
-            'hosts': [os.environ.get('REDIS_URL', 'redis://localhost:6379')],
-        },
-    }
+# if DEBUG:
+#     CHANNEL_LAYERS = {
+#         'default': {
+#             'BACKEND': 'channels.layers.InMemoryChannelLayer',
+#         },
+#     }
+# else:
+#     CHANNEL_LAYERS = {
+#         'BACKEND': 'channels_redis.core.RedisChannelLayer',
+#         'CONFIG': {
+#             'hosts': [os.environ.get('REDIS_URL', 'redis://localhost:6379')],
+#         },
+#     }
 
+CHANNEL_LAYERS = {
+    'BACKEND': 'channels_redis.core.RedisChannelLayer',
+    'CONFIG': {
+        'hosts': [os.environ.get('REDIS_URL', 'redis://localhost:6379')],
+    },
+}
 print(CHANNEL_LAYERS)
 
 
