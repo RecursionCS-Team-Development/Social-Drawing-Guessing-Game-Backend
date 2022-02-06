@@ -31,7 +31,7 @@ DEBUG = env.get_value('DEBUG', cast = bool, default = True)
 if DEBUG:
     ALLOWED_HOSTS = ['http://localhost:8080/']
 else:
-    ALLOWED_HOSTS = ['social-drawing-guessing-game.herokuapp.com', 'yourdomain.com']
+    ALLOWED_HOSTS = ['social-drawing-guessing.herokuapp.com', 'yourdomain.com']
 
 
 INSTALLED_APPS = [
@@ -70,7 +70,8 @@ CORS_ALLOW_CREDENTIALS = True
 CORS_ORIGIN_WHITELIST = (
     'http://localhost:8080',
     'http://127.0.0.1:8080',
-    'https://social-drawing-guessing.netlify.app'
+    'https://social-drawing-guessing.netlify.app',
+    'https://kind-ardinghelli-bdabe2.netlify.app'
 )
 
 CORS_ALLOW_HEADERS = (
@@ -117,7 +118,7 @@ else:
     CHANNEL_LAYERS = {
         'BACKEND': 'channels_redis.core.RedisChannelLayer',
         'CONFIG': {
-            'hosts': [('127.0.0.1', 6379)],
+            'hosts': [os.environ.get('REDIS_URL', 'redis://localhost:6379')],
         },
     }
 
