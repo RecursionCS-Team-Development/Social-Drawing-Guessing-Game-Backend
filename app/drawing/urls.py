@@ -1,5 +1,8 @@
+from rest_framework import routers
 from django.urls import path
 from . import views
+
+router = routers.DefaultRouter()
 
 room_list = views.RoomViewSet.as_view({
     'get': 'list',
