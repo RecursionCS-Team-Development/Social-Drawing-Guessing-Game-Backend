@@ -33,7 +33,6 @@ class DrawConsumer(AsyncWebsocketConsumer):
     )
 
   async def draw_instruction(self, event):
-    print('send data', event)
     message = event['message']
 
     await self.send(text_data=json.dumps({

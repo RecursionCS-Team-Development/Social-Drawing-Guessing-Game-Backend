@@ -40,12 +40,12 @@ class ChatConsumer(AsyncWebsocketConsumer):
       'message': message,
       'playerName': playerName,
       'playerImg': playerImg,
-      'playerId': playerId
+      'playerId': playerId,
       'message': message
     })
 
   async def chat_message(self, event):
-    print(event)
+    # print(event)
     message = event['message']
     playerName = event['playerName']
     playerImg = event['playerImg']
