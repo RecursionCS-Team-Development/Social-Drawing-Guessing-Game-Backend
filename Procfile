@@ -13,3 +13,4 @@ worker3: cd app && python manage.py runworker channels --settings=app.settings -
 worker: cd app && python manage.py runworker channel_layer -v2
 worker2: cd app && python manage.py runworker channels --settings=settings -v2
 worker4: cd app && python manage.py runworker channels --settings=app.app.settings -v2
+worker5: --pythonpath ./app python manage.py runworker channels --settings=app.settings -v2
