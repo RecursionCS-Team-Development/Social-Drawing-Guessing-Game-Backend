@@ -31,7 +31,7 @@ DEBUG = env.get_value('DEBUG', cast = bool, default = True)
 if DEBUG:
     ALLOWED_HOSTS = ['http://localhost:8080/']
 else:
-    ALLOWED_HOSTS = ['social-drawing-guessing.herokuapp.com', 'yourdomain.com']
+    ALLOWED_HOSTS = ['social-drawing-guessing.herokuapp.com', 'yourdomain.com', 'kind-ardinghelli-bdabe2.netlify.app']
 
 
 INSTALLED_APPS = [
@@ -118,7 +118,7 @@ else:
     CHANNEL_LAYERS = {
         'BACKEND': 'channels_redis.core.RedisChannelLayer',
         'CONFIG': {
-            'hosts': [os.environ.get('REDIS_URL', 'redis://localhost:6379')],
+            'hosts': ('127.0.0.1', 'redis://localhost:6379')],
         },
     }
 
