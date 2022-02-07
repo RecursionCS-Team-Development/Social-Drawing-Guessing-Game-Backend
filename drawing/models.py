@@ -18,7 +18,7 @@ class Room(models.Model):
         ("medium", "medium"),
         ("hard", "hard"),
     ])
-    round = models.PositiveSmallIntegerField("ラウンド数", default=5, validators=[MinValueValidator(3), MaxValueValidator(7)])
+    round = models.PositiveSmallIntegerField("ラウンド数", default=5, validators=[MinValueValidator(1), MaxValueValidator(10)])
     # status = models.PositiveSmallIntegerField("状態", default=1, choices=[
     #     (1, "作成"),
     #     (2, "参加"),

@@ -31,7 +31,8 @@ DEBUG = env.get_value('DEBUG', cast = bool, default = True)
 if DEBUG:
     ALLOWED_HOSTS = ['http://localhost:8080/']
 else:
-    ALLOWED_HOSTS = ['social-drawing-guessing.herokuapp.com', 'yourdomain.com', 'kind-ardinghelli-bdabe2.netlify.app']
+    ALLOWED_HOSTS = ['social-drawing-guessing.herokuapp.com', 'yourdomain.com', 'kind-ardinghelli-bdabe2.netlify.app','kind-ardinghelli-bdabe2.netlify.app/']
+    # ALLOWED_HOSTS = ['social-drawing-guessing-game.herokuapp.com', 'social-drawing-guessing.netlify.app', 'http://localhost:8080/', 'social-drawing-guessing.netlify.app/']
 
 
 INSTALLED_APPS = [
@@ -108,6 +109,14 @@ TEMPLATES = [
 WSGI_APPLICATION = 'app.wsgi.application'
 ASGI_APPLICATION = 'app.asgi.application'
 
+
+CHANNEL_LAYERS = {
+    'BACKEND': 'channels_redis.core.RedisChannelLayer',
+    'CONFIG': {
+        'hosts': [(env('DB_REDIS_HOST'), env('DB_REDIS_PORT'))],
+    },
+}
+
 if DEBUG:
     CHANNEL_LAYERS = {
         'default': {
@@ -118,9 +127,12 @@ else:
     CHANNEL_LAYERS = {
         'BACKEND': 'channels_redis.core.RedisChannelLayer',
         'CONFIG': {
-            'hosts': ('127.0.0.1', 'redis://localhost:6379'),
+            # 'hosts': ('127.0.0.1', 'redis://localhost:6379'),
+            # 'hosts': [('127.0.0.1', 6379)],
+            'hosts': [(env('DB_REDIS_HOST'), env('DB_REDIS_PORT'))],
         },
     }
+
 
 # Data base接続
 SQLITE = env.get_value('SQLITE', cast = bool, default = True)
