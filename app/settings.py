@@ -284,3 +284,4 @@ AUTH_USER_MODEL = 'accounts.User'
 
 # heroku
 django_heroku.settings(locals())
+del DATABASES['default']['OPTIONS']['sslmode']
