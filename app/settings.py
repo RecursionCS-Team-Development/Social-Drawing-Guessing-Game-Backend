@@ -16,17 +16,18 @@ LOCALE_PATHS = (os.path.join(BASE_DIR, 'locale'),)
 env = environ.Env(DEBUG=(bool,False))
 
 # 開発環境と本番環境での設定ファイルの分岐
-IS_ON_HEROKU = env.bool('ON_HEROKU', default=False)
+IS_ON_HEROKU = os.environ.get('ON_HEROKU', default=False)
 
 if not IS_ON_HEROKU:
     env.read_env(os.path.join(BASE_DIR,'.env'))
 
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = env('SECRET_KEY')
-
+# SECRET_KEY = env('SECRET_KEY')
+SECRET_KEY = os.environ.get('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = env.get_value('DEBUG', cast = bool, default = True)
+# DEBUG = env.get_value('DEBUG', cast = bool, default = True)
+DEBUG = os.environ.get('DEBUG', cast = bool, default= True)
 
 if DEBUG:
     ALLOWED_HOSTS = ['http://localhost:8080/']
@@ -137,7 +138,8 @@ else:
 
 
 # Data base接続
-SQLITE = env.get_value('SQLITE', cast = bool, default = True)
+# SQLITE = env.get_value('SQLITE', cast = bool, default = True)
+SQLITE = os.environ.get('SQLITE', cast=bool, default=True)
 
 if SQLITE:
     DATABASES = {
@@ -150,11 +152,11 @@ else:
     DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': env('DB_NAME_SQL'),
-        'USER': env('DB_USER_SQL'),
-        'PASSWORD': env('DB_PASSWORD_SQL'),
-        'HOST': env('DB_HOST_SQL'),
-        'PORT': 3306 if DEBUG else env('DB_PORT_SQL'),
+        'NAME': os.environ.get('DB_NAME_SQL'),
+        'USER': os.environ.get('DB_USER_SQL'),
+        'PASSWORD': os.environ.get('DB_PASSWORD_SQL'),
+        'HOST': os.environ.get('DB_HOST_SQL'),
+        'PORT': 3306 if DEBUG else os.environ.get('DB_PORT_SQL'),
     }
 }
 
