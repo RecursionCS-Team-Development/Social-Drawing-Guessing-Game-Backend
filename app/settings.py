@@ -27,7 +27,7 @@ if not IS_ON_HEROKU:
 SECRET_KEY = os.environ.get('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 # DEBUG = env.get_value('DEBUG', cast = bool, default = True)
-DEBUG = os.environ.get('DEBUG', cast = bool, default= True)
+DEBUG = os.environ.get('DEBUG', default= True)
 
 if DEBUG:
     ALLOWED_HOSTS = ['http://localhost:8080/']
@@ -139,7 +139,7 @@ else:
 
 # Data base接続
 # SQLITE = env.get_value('SQLITE', cast = bool, default = True)
-SQLITE = os.environ.get('SQLITE', cast=bool, default=True)
+SQLITE = os.environ.get('SQLITE', default=True)
 
 if SQLITE:
     DATABASES = {
