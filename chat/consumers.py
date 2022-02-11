@@ -1,5 +1,6 @@
 import json
 from channels.generic.websocket import AsyncWebsocketConsumer
+from asgiref.sync import sync_to_async
 
 class ChatConsumer(AsyncWebsocketConsumer):
   async def connect(self):
@@ -7,18 +8,18 @@ class ChatConsumer(AsyncWebsocketConsumer):
     self.room_name = self.scope['url_route']['kwargs']['room_name']
     self.room_group_name = f'chat_{self.room_name}'
 
-    await self.channel_layer.group_add(self.room_group_name, self.channel_name)
+    await sync_to_async(self.channel_layer.group_add(self.room_group_name, self.channel_name))
 
-    await self.accept()
+    await sync_to_async(self.accept())
 
-    await self.send(text_data=json.dumps({
+    await sync_to_async(self.send(text_data=json.dumps({
       'type': 'connection established',
       'message': 'Successfully connected with Django'
-    }))
+    })))
 
   async def disconnect(self, code):
     print('#'*10 + 'disconnect' + '#'*10)
-    await self.channel_layer.group_discard(self.room_group_name, self.channel_name)
+    await sync_to_async(self.channel_layer.group_discard(self.room_group_name, self.channel_name))
 
   async def receive(self, text_data):
     print('#'*10 + 'receive' + '#'*10)
@@ -35,14 +36,14 @@ class ChatConsumer(AsyncWebsocketConsumer):
     playerImg = json_text['playerImg']
     playerId = json_text['playerId']
 
-    await self.channel_layer.group_send(self.room_group_name, {
+    sync_to_async(await self.channel_layer.group_send(self.room_group_name, {
       'type': 'chat_message',
       'message': message,
       'playerName': playerName,
       'playerImg': playerImg,
       'playerId': playerId,
       'message': message
-    })
+    }))
 
   async def chat_message(self, event):
     # print(event)
@@ -51,9 +52,9 @@ class ChatConsumer(AsyncWebsocketConsumer):
     playerImg = event['playerImg']
     playerId = event['playerId']
 
-    await self.send(text_data=json.dumps({
+    sync_to_async(await self.send(text_data=json.dumps({
       'message': message,
       'playerName': playerName,
       'playerImg': playerImg,
       'playerId': playerId
-    }))
+    })))
