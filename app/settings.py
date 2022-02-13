@@ -17,7 +17,7 @@ env = environ.Env(DEBUG=(bool,False))
 
 # 開発環境と本番環境での設定ファイルの分岐
 IS_ON_HEROKU = os.environ.get('ON_HEROKU', default=False)
-
+print(IS_ON_HEROKU)
 if not IS_ON_HEROKU:
     env.read_env(os.path.join(BASE_DIR,'.env'))
 
@@ -34,9 +34,10 @@ if DEBUG:
 else:
     ALLOWED_HOSTS = ['social-drawing-guessing.herokuapp.com', 'yourdomain.com', 'kind-ardinghelli-bdabe2.netlify.app','kind-ardinghelli-bdabe2.netlify.app/']
     # ALLOWED_HOSTS = ['social-drawing-guessing-game.herokuapp.com', 'social-drawing-guessing.netlify.app', 'http://localhost:8080/', 'social-drawing-guessing.netlify.app/']
-
+print(DEBUG)
 
 INSTALLED_APPS = [
+    'channels'
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -49,7 +50,6 @@ INSTALLED_APPS = [
     'accounts',
     'drawing',
     'chat',
-    'channels'
 ]
 
 MIDDLEWARE = [
@@ -110,7 +110,9 @@ TEMPLATES = [
 WSGI_APPLICATION = 'app.wsgi.application'
 ASGI_APPLICATION = 'app.asgi.application'
 
-
+SECURE_SSL_REDIRECT = True
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
 # CHANNEL_LAYERS = {
 #     'BACKEND': 'channels_redis.core.RedisChannelLayer',
 #     'CONFIG': {
