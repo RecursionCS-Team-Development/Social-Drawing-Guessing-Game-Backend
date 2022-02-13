@@ -37,7 +37,6 @@ else:
 print(DEBUG)
 
 INSTALLED_APPS = [
-    'channels'
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -47,6 +46,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'djoser',
     'corsheaders',
+    'channels'
     'accounts',
     'drawing',
     'chat',
