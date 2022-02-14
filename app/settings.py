@@ -32,8 +32,7 @@ DEBUG = os.environ.get('DEBUG', default= True)
 if DEBUG:
     ALLOWED_HOSTS = ['http://localhost:8080/']
 else:
-    ALLOWED_HOSTS = ['social-drawing-guessing.herokuapp.com', 'yourdomain.com', 'kind-ardinghelli-bdabe2.netlify.app','kind-ardinghelli-bdabe2.netlify.app/']
-    # ALLOWED_HOSTS = ['social-drawing-guessing-game.herokuapp.com', 'social-drawing-guessing.netlify.app', 'http://localhost:8080/', 'social-drawing-guessing.netlify.app/']
+    ALLOWED_HOSTS = ['social-drawing-guessing.herokuapp.com', 'yourdomain.com', 'kind-ardinghelli-bdabe2.netlify.app','kind-ardinghelli-bdabe2.netlify.app/', 'social-drawing-guessing-game.herokuapp.com', 'social-drawing-guessing.netlify.app', 'http://localhost:8080/', 'social-drawing-guessing.netlify.app/']
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -45,13 +44,14 @@ INSTALLED_APPS = [
     'rest_framework',
     'djoser',
     'corsheaders',
-    'channels'
     'accounts',
     'drawing',
     'chat',
+    'channels'
 ]
 
 MIDDLEWARE = [
+    'log_request_id.middleware.RequestIDMiddleware'
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.locale.LocaleMiddleware',
@@ -134,7 +134,7 @@ else:
             },
         }
     }
-print(os.environ.get('REDIS_URL'))
+# print(os.environ.get('REDIS_URL'))
 
 # Data base接続
 # SQLITE = env.get_value('SQLITE', cast = bool, default = True)
@@ -284,3 +284,38 @@ AUTH_USER_MODEL = 'accounts.User'
 # heroku
 django_heroku.settings(locals())
 del DATABASES['default']['OPTIONS']['sslmode']
+
+# Support for X-Request-ID
+
+LOG_REQUEST_ID_HEADER = 'HTTP_X_REQUEST_ID'
+LOG_REQUESTS = True
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'filters': {
+        'request_id': {
+            '()': 'log_request_id.filters.RequestIDFilter'
+        }
+    },
+    'formatters': {
+        'standard': {
+            'format': '%(levelname)-8s [%(asctime)s] [%(request_id)s] %(name)s: %(message)s'
+        },
+    },
+    'handlers': {
+        'console': {
+            'level': 'DEBUG',
+            'class': 'logging.StreamHandler',
+            'filters': ['request_id'],
+            'formatter': 'standard',
+        },
+    },
+    'loggers': {
+        'log_request_id.middleware': {
+            'handlers': ['console'],
+            'level': 'DEBUG',
+            'propagate': False,
+        },
+    }
+}
